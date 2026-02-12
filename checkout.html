@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>إتمام الطلب</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Cairo',sans-serif;}
+body{margin:0;height:100vh;background:linear-gradient(135deg,#0b1020,#1a0033,#001a22);color:white;
+display:flex;justify-content:center;align-items:center;}
+
+.card{
+width:500px;
+background:#071018;
+border-radius:20px;
+padding:25px;
+text-align:center;
+animation:borderGlow 3s linear infinite;
+}
+
+@keyframes borderGlow{
+0%{box-shadow:0 0 16px #00f0ff;}
+50%{box-shadow:0 0 16px #ff4df0;}
+100%{box-shadow:0 0 16px #00f0ff;}
+}
+
+.btn{
+padding:10px 20px;
+border-radius:18px;
+border:none;
+cursor:pointer;
+font-weight:700;
+background:linear-gradient(90deg,#00e5ff,#ff66cc);
+color:black;
+margin-top:15px;
+}
+a{color:#66ccff;}
+/* ===== Responsive للموبايل ===== */
+
+@media (max-width: 600px){
+
+.card{
+flex-direction: column;
+width:95%;
+}
+
+.left,
+.right{
+width:100%;
+}
+
+.book{
+flex-direction: column;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="box"></div>
+
+<script>
+let o=JSON.parse(localStorage.getItem("order"));
+
+if(!o){
+box.innerHTML="<h3>لا يوجد طلب</h3>";
+}else{
+let total=o.count * o.book.price;
+
+box.innerHTML=`
+<h2>${o.book.title}</h2>
+<p>عدد النسخ: ${o.count}</p>
+<p>الإجمالي: ${total}</p>
+<p>تواصل مع الكاتب:</p>
+<a href="${o.book.contact}" target="_blank">${o.book.contact}</a>
+<button class="btn" onclick="done()">تأكيد</button>
+`;
+}
+
+function done(){
+alert("تم إرسال الطلب ✔");
+}
+</script>
+
+</body>
+</html>

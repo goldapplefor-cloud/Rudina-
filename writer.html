@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>صفحة الكاتب - منصة أماني الأدبية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Cairo',sans-serif;}
+body{margin:0;min-height:100vh;background:linear-gradient(135deg,#0b1020,#1a0033,#001a22);color:white;}
+
+.wrapper{display:flex;justify-content:center;padding:40px;}
+
+.card{
+width:820px;
+border-radius:20px;
+background:#071018;
+padding:20px;
+animation:borderGlow 3s linear infinite;
+}
+
+@keyframes borderGlow{
+0%{box-shadow:0 0 16px #00f0ff;}
+25%{box-shadow:0 0 16px #ff4df0;}
+50%{box-shadow:0 0 16px #00ff99;}
+75%{box-shadow:0 0 16px #66ccff;}
+100%{box-shadow:0 0 16px #00f0ff;}
+}
+
+h2{text-align:center;margin-bottom:15px;}
+
+.input, textarea, select{
+width:100%;
+padding:10px;
+margin:8px 0;
+background:transparent;
+border:none;
+border-bottom:2px solid #00e5ff;
+color:white;
+}
+
+.btn{
+width:100%;
+padding:11px;
+border-radius:18px;
+border:none;
+cursor:pointer;
+font-weight:700;
+background:linear-gradient(90deg,#00e5ff,#ff66cc);
+color:black;
+margin-top:10px;
+}
+
+img{width:140px;margin-top:10px;border-radius:10px;}
+/* ===== Responsive للموبايل ===== */
+
+@media (max-width: 600px){
+
+.card{
+flex-direction: column;
+width:95%;
+}
+
+.left,
+.right{
+width:100%;
+}
+
+.book{
+flex-direction: column;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+<div class="card">
+
+<h2 id="welcome"></h2>
+
+<input id="title" class="input" placeholder="اسم الكتاب">
+
+<input type="file" id="imgInput" accept="image/*">
+<img id="preview">
+
+<textarea id="desc" rows="3" placeholder="نبذة عن الكتاب"></textarea>
+
+<input id="price" type="number" step="0.01" class="input" placeholder="السعر">
+
+<select id="type" class="input">
+<option>ورقي</option>
+<option>PDF</option>
+<option>كلاهما</option>
+</select>
+
+<input id="qty" type="number" class="input" placeholder="عدد النسخ الورقية">
+
+<input id="contact" class="input" placeholder="رابط التواصل (واتساب أو انستقرام)">
+
+<button class="btn" onclick="save()">حفظ البيانات</button>
+<button class="btn" onclick="newBook()">إضافة كتاب جديد</button>
+
+</div>
+</div>
+
+<script>
+let user=new URLSearchParams(location.search).get("user");
+welcome.innerText="مرحبا "+user;
+
+// تحميل محفوظ
+let data=JSON.parse(localStorage.getItem("book_"+user));
+if(data){
+title.value=data.title;
+desc.value=data.desc;
+price.value=data.price;
+type.value=data.type;
+qty.value=data.qty;
+contact.value=data.contact;
+preview.src=data.img;
+}
+
+imgInput.onchange=e=>{
+let file=e.target.files[0];
+let r=new FileReader();
+r.onload=x=>preview.src=x.target.result;
+r.readAsDataURL(file);
+}
+
+function save(){
+let book={
+title:title.value,
+img:preview.src,
+desc:desc.value,
+price:price.value,
+type:type.value,
+qty:qty.value,
+contact:contact.value
+};
+localStorage.setItem("book_"+user,JSON.stringify(book));
+alert("تم حفظ بيانات الكتاب");
+}
+
+function newBook(){
+title.value="";
+desc.value="";
+price.value="";
+qty.value="";
+contact.value="";
+preview.src="";
+}
+</script>
+
+</body>
+</html>

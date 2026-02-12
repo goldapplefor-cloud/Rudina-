@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>رحلة التعلم - منصة أماني الأدبية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Cairo',sans-serif;}
+body{margin:0;background:linear-gradient(135deg,#0b1020,#1a0033,#001a22);color:white;}
+
+.wrapper{display:flex;justify-content:center;padding:40px;}
+.card{
+width:900px;
+background:#071018;
+border-radius:20px;
+padding:20px;
+animation:borderGlow 3s linear infinite;
+}
+
+@keyframes borderGlow{
+0%{box-shadow:0 0 16px #00f0ff;}
+50%{box-shadow:0 0 16px #ff4df0;}
+100%{box-shadow:0 0 16px #00f0ff;}
+}
+
+.book{
+border-bottom:1px solid #0af;
+padding:15px 0;
+display:flex;
+gap:15px;
+}
+
+.book img{width:120px;border-radius:10px;}
+
+.input,select{
+background:transparent;
+border:none;
+border-bottom:2px solid #00e5ff;
+color:white;
+padding:6px;
+}
+
+.btn{
+padding:8px 16px;
+border-radius:14px;
+border:none;
+cursor:pointer;
+font-weight:700;
+background:linear-gradient(90deg,#00e5ff,#ff66cc);
+color:black;
+margin-top:8px;
+}
+/* ===== Responsive للموبايل ===== */
+
+@media (max-width: 600px){
+
+.card{
+flex-direction: column;
+width:95%;
+}
+
+.left,
+.right{
+width:100%;
+}
+
+.book{
+flex-direction: column;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+<div class="card" id="list"></div>
+</div>
+
+<script>
+let html="";
+
+for(let k in localStorage){
+if(k.startsWith("book_")){
+let b=JSON.parse(localStorage.getItem(k));
+
+html+=`
+<div class="book">
+<img src="${b.img}">
+<div>
+<h3>${b.title}</h3>
+<p>${b.desc}</p>
+<p>السعر: ${b.price}</p>
+
+<select id="type_${k}">
+<option>ورقي</option>
+<option>PDF</option>
+<option>كلاهما</option>
+</select>
+
+<input id="count_${k}" class="input" type="number" placeholder="عدد النسخ">
+<br>
+<button class="btn" onclick="buy('${k}')">شراء</button>
+</div>
+</div>`;
+}
+}
+
+list.innerHTML=html || "<h3>لا توجد كتب بعد</h3>";
+
+function buy(key){
+let b=JSON.parse(localStorage.getItem(key));
+let c=parseInt(document.getElementById("count_"+key).value||0);
+
+if(c>b.qty){
+alert("المتوفر فقط "+b.qty);
+return;
+}
+
+localStorage.setItem("order",JSON.stringify({book:b,count:c}));
+location="checkout.html";
+}
+</script>
+
+</body>
+</html>

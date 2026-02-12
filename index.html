@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>منصة أماني الأدبية</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Cairo',sans-serif;}
+
+body{
+margin:0;
+height:100vh;
+background:linear-gradient(135deg,#0b1020,#1a0033,#001a22);
+color:white;
+}
+
+.page-title{
+text-align:center;
+font-size:42px;
+font-weight:700;
+margin-top:30px;
+}
+
+.wrapper{
+display:flex;
+justify-content:center;
+margin-top:30px;
+}
+
+.card{
+width:780px;
+display:flex;
+border-radius:20px;
+overflow:hidden;
+background:#071018;
+animation:borderGlow 3s linear infinite;
+}
+
+@keyframes borderGlow{
+0%{box-shadow:0 0 16px #00f0ff;}
+25%{box-shadow:0 0 16px #ff4df0;}
+50%{box-shadow:0 0 16px #00ff99;}
+75%{box-shadow:0 0 16px #66ccff;}
+100%{box-shadow:0 0 16px #00f0ff;}
+}
+
+.left{
+width:50%;
+background:linear-gradient(135deg,#00e5ff,#007a8a);
+padding:18px;
+display:flex;
+flex-direction:column;
+align-items:flex-start;
+font-size:14px;
+line-height:1.6;
+}
+
+.left img{
+width:90px;
+height:90px;
+border-radius:50%;
+margin-bottom:10px;
+}
+
+.right{
+width:50%;
+background:#000;
+padding:20px;
+}
+
+.role-box{
+display:flex;
+gap:10px;
+margin-bottom:12px;
+}
+
+.role-btn{
+flex:1;
+padding:8px;
+border-radius:14px;
+border:2px solid #00e5ff;
+background:transparent;
+color:white;
+cursor:pointer;
+font-size:13px;
+transition:.3s;
+}
+
+.role-btn.active{
+background:linear-gradient(90deg,#00e5ff,#ff66cc);
+color:black;
+border:none;
+}
+
+.input{
+width:100%;
+padding:9px;
+margin-bottom:10px;
+background:transparent;
+border:none;
+border-bottom:2px solid #00e5ff;
+color:white;
+font-size:13px;
+outline:none;
+}
+
+.btn{
+width:100%;
+padding:10px;
+border-radius:18px;
+border:none;
+cursor:pointer;
+font-weight:700;
+background:linear-gradient(90deg,#00e5ff,#ff66cc);
+color:black;
+font-size:14px;
+}
+
+.switch{
+text-align:center;
+margin-top:10px;
+color:#66ccff;
+cursor:pointer;
+font-size:12px;
+}
+
+.msg{
+font-size:12px;
+color:#ff8080;
+margin-top:6px;
+}
+/* ===== Responsive للموبايل ===== */
+
+@media (max-width: 600px){
+
+.card{
+flex-direction: column;
+width:95%;
+}
+
+.left,
+.right{
+width:100%;
+}
+
+.book{
+flex-direction: column;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page-title">منصة أماني الأدبية</div>
+
+<div class="wrapper">
+<div class="card">
+
+<!-- LEFT -->
+<div class="left">
+<img src="logo site.jpeg">
+
+<p>
+مساحة لكل من يبحث عن المعرفة والتطور والأفكار الجديدة.
+هنا تجد محتوى يُلهمك وكتب تضيف قيمة حقيقية لحياتك.
+</p>
+
+<p>
+منصتنا ليست مجرد بيع ملفات، بل رحلة تعلم، ونقطة بداية
+لأشخاص يؤمنون أن المعرفة تغيّر الحياة.
+</p>
+
+<p>
+إذا كنت من أصحاب الفكر المتجدد،
+ومن الذين يسعون للأفضل دائما،
+فأنت في المكان الصحيح
+</p>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<div class="role-box">
+<button class="role-btn active" onclick="setRole(this,'buyer')">مشتري</button>
+<button class="role-btn" onclick="setRole(this,'writer')">كاتب</button>
+</div>
+
+<div id="formArea"></div>
+<div id="msg" class="msg"></div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+let currentRole="buyer";
+
+function setRole(btn,role){
+document.querySelectorAll(".role-btn").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+currentRole=role;
+showLogin();
+}
+
+function showLogin(){
+formArea.innerHTML=`
+<input id="user" class="input" placeholder="اسم المستخدم">
+<input id="pass" class="input" type="password" placeholder="كلمة المرور">
+<button class="btn" onclick="login()">دخول</button>
+<div class="switch" onclick="showRegister()">إنشاء حساب</div>
+`;
+msg.innerText="";
+}
+
+function showRegister(){
+formArea.innerHTML=`
+<input id="user" class="input" placeholder="اسم المستخدم">
+<input id="email" class="input" placeholder="البريد">
+<input id="pass" class="input" type="password" placeholder="كلمة المرور">
+<button class="btn" onclick="register()">تسجيل</button>
+<div class="switch" onclick="showLogin()">لدي حساب</div>
+`;
+msg.innerText="";
+}
+
+function register(){
+let u=user.value.trim();
+let p=pass.value.trim();
+
+if(!u || !p){
+msg.innerText="يرجى تعبئة البيانات";
+return;
+}
+
+if(localStorage.getItem("user_"+u)){
+msg.innerText="اسم المستخدم موجود مسبقاً";
+return;
+}
+
+localStorage.setItem("user_"+u,p);
+localStorage.setItem("role_"+u,currentRole);
+
+msg.innerText="تم إنشاء الحساب ✔";
+setTimeout(()=>goNext(u),800);
+}
+
+function login(){
+let u=user.value.trim();
+let p=pass.value.trim();
+
+let saved=localStorage.getItem("user_"+u);
+
+if(!saved){
+msg.innerText="المستخدم غير موجود";
+return;
+}
+
+if(saved!==p){
+msg.innerText="كلمة المرور غير صحيحة";
+return;
+}
+
+let savedRole = localStorage.getItem("role_"+u);
+
+if(savedRole!==currentRole){
+msg.innerText="الدور المختار لا يطابق نوع الحساب";
+return;
+}
+
+goNext(u);
+}
+
+function goNext(username){
+if(currentRole==="writer"){
+location.href="writer.html?user="+username;
+}else{
+location.href="buyer.html";
+}
+}
+
+showLogin();
+</script>
+
+</body>
+</html>
